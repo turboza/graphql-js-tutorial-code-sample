@@ -1,32 +1,36 @@
 const express = require('express')
 const graphqlHTTP = require('express-graphql')
 const { graphql, buildSchema } = require('graphql')
+const { range } = require('lodash')
 
 const schema = buildSchema(`
+  type RandomDie {
+    numSides: Int!
+    rollOnce: Int!
+    roll(numRolls: Int!): [Int]
+  }
+
   type Query {
-    quoteOfTheDay: String
-    random: Float!
-    rollThreeDice: [Int]
-    rollDice(numDice: Int!, numSides: Int): [Int]
+    getDie(numSides: Int): RandomDie
   }
 `)
 
-const root = {
-  quoteOfTheDay: () => Math.random() < 0.5 ? 'This is awesome' : 'You can do it!',
-  random: () => Math.random() * 1000,
-  rollThreeDice: () => [1, 2, 3].map(_ => random(1, 6)),
-  rollDice: ({ numDice, numSides }) => {
-    const output = []
-    for(let i = 0; i < numDice; i++) {
-      output.push(random(1, numSides))
-    }
-    return output
+class RandomDie {
+  constructor(numSides) {
+    this.numSides = numSides
+  }
+
+  rollOnce() {
+    return random(1, this.numSides)
+  }
+
+  roll({ numRolls }) {
+    return range(numRolls).map(_ => this.rollOnce())
   }
 }
 
-function random(start, end) {
-  const range = end - start + 1
-  return start + Math.floor(Math.random() * range)
+const root = {
+  getDie: ({ numSides }) => new RandomDie(numSides || 6)
 }
 
 const app = express()
@@ -38,3 +42,12 @@ app.use('/graphql', graphqlHTTP({
 
 app.listen(4000)
 console.log('Running a GraphQL API server at localhost:4000/graphql')
+
+
+/*
+ * Helpers
+ */
+function random(start, end) {
+  const range = end - start + 1
+  return start + Math.floor(Math.random() * range)
+}
