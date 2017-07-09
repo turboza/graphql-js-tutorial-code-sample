@@ -1,6 +1,7 @@
 const express = require('express')
 const graphqlHTTP = require('express-graphql')
 
+// Change the require below to other tutorial number to run that tutorial
 const { schema, root } = require('./tutorial-8')
 
 const app = express()
