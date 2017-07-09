@@ -14,15 +14,9 @@ var schema = buildSchema(`
 `);
 
 var root = {
-  quoteOfTheDay: () => {
-    return Math.random() < 0.5 ? 'Take it easy' : 'Salvation lies within';
-  },
-  random: () => {
-    return Math.random();
-  },
-  rollThreeDice: () => {
-    return [1, 2, 3].map(_ => 1 + Math.floor(Math.random() * 6));
-  },
+  quoteOfTheDay: () => Math.random() < 0.5 ? 'Take it easy' : 'Salvation lies within',
+  random: () => Math.random() * 10000000,
+  rollThreeDice: () => [1, 2, 3].map(_ => random(1, 6)),
 };
 
 module.exports = {
