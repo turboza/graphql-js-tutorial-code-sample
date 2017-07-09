@@ -1,5 +1,7 @@
 /*
  * Tutorial 7: Mutation and Input type
+ * -------------------------------------
+ * http://graphql.org/graphql-js/mutations-and-input-types/
  */
 const { buildSchema } = require('graphql')
 const crypto = require('crypto')

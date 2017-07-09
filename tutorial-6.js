@@ -1,5 +1,7 @@
 /*
  * Tutorial 6: Object Types
+ * --------------------------------------
+ * http://graphql.org/graphql-js/object-types/
  */
 const { graphql, buildSchema } = require('graphql')
 const { range } = require('lodash')
